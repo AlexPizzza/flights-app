@@ -1,8 +1,13 @@
 // @ts-nocheck
 
-// Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
-import firebaseAuth from 'firebase/auth';
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signInAnonymously,
+  signOut
+} from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore/lite';
 
 import {
@@ -14,7 +19,6 @@ import {
   APP_ID
 } from 'react-native-dotenv';
 
-// Your app's Firebase configuration
 const firebaseConfig = {
   apiKey: API_KEY,
   authDomain: AUTH_DOMAIN,
@@ -24,8 +28,13 @@ const firebaseConfig = {
   appId: APP_ID
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-export const auth = firebaseAuth;
+export const auth = {
+  signInWithEmailAndPassword,
+  signInAnonymously,
+  signOut,
+  createUserWithEmailAndPassword
+};
+export const Auth = getAuth(app);
 export const db = getFirestore(app);
