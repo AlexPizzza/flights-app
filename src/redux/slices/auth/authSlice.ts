@@ -7,9 +7,13 @@ import {
   SerializedError
 } from '@reduxjs/toolkit';
 import { FirebaseError } from 'firebase/app';
-import { UserCredential } from 'firebase/auth';
+import {
+  signInWithEmailAndPassword,
+  signOut,
+  UserCredential
+} from 'firebase/auth';
 import { WritableDraft } from 'immer/dist/internal';
-import { Auth, auth } from '../../../config/firebase';
+import { auth } from '../../../config/firebase';
 import { RootState } from '../../store';
 import { AuthStatus } from './auth.enums';
 import { AuthData, AuthState } from './auth.interfaces';
@@ -20,12 +24,11 @@ const initialState: AuthState = {
   error: null
 };
 
-export const signIn = createAsyncThunk(
+export const userSignIn = createAsyncThunk(
   'signIn',
   async (data: AuthData): Promise<string | FirebaseError> => {
     const { email, password } = data;
-    return auth
-      .signInWithEmailAndPassword(Auth, email, password)
+    return signInWithEmailAndPassword(auth, email, password)
       .then((userCredential: UserCredential) =>
         userCredential.user.getIdToken()
       )
@@ -42,18 +45,20 @@ export const signIn = createAsyncThunk(
   }
 );
 
-export const signOut = createAsyncThunk('signOut', async (): Promise<void> => {
-  auth
-    .signOut(Auth)
-    .then(() =>
-      AsyncStorage.removeItem('token')
-        .then(() => {
-          console.log('remove token');
-        })
-        .catch((error: any) => console.error(error))
-    )
-    .catch((error: any) => console.error(error));
-});
+export const userSignOut = createAsyncThunk(
+  'signOut',
+  async (): Promise<void> => {
+    return signOut(auth)
+      .then(() =>
+        AsyncStorage.removeItem('token')
+          .then(() => {
+            console.log('remove token');
+          })
+          .catch((error: any) => console.error(error))
+      )
+      .catch((error: any) => console.error(error));
+  }
+);
 
 export const authSlice = createSlice({
   name: 'auth',
@@ -89,13 +94,13 @@ export const authSlice = createSlice({
         } & {});
 
     builder
-      .addCase(signIn.pending, (state: WritableDraft<AuthState>) => {
-        state.token = '';
+      .addCase(userSignIn.pending, (state: WritableDraft<AuthState>) => {
+        state.token = null;
         state.status = AuthStatus.loading;
-        state.error = '';
+        state.error = null;
       })
       .addCase(
-        signIn.fulfilled,
+        userSignIn.fulfilled,
         (
           state: WritableDraft<AuthState>,
           action: PayloadAction<string | FirebaseError>
@@ -104,6 +109,8 @@ export const authSlice = createSlice({
             state.status = AuthStatus.failed;
             state.error = action.payload.code;
           } else {
+            console.log('token received', action.payload);
+
             state.token = action.payload;
             state.status = AuthStatus.succeeded;
             state.error = null;
@@ -111,13 +118,60 @@ export const authSlice = createSlice({
         }
       )
       .addCase(
-        signIn.rejected,
+        userSignIn.rejected,
         (
           state: WritableDraft<AuthState>,
           action: PayloadAction<
             FirebaseUnknown,
             string,
             FirebaseRejected & RejectedWithValue,
+            SerializedError
+          >
+        ) => {
+          state.error = action.error.message;
+          state.status = AuthStatus.failed;
+        }
+      );
+
+    builder
+      .addCase(userSignOut.pending, (state: WritableDraft<AuthState>) => {
+        state.token = null;
+        state.status = AuthStatus.loading;
+        state.error = null;
+      })
+      .addCase(
+        userSignOut.fulfilled,
+        (
+          state: WritableDraft<AuthState>,
+          action: PayloadAction<
+            void,
+            string,
+            { arg: void; requestId: string; requestStatus: 'fulfilled' },
+            never
+          >
+        ) => {
+          state.token = null;
+          state.status = AuthStatus.succeeded;
+          state.error = null;
+        }
+      )
+      .addCase(
+        userSignOut.rejected,
+        (
+          state: WritableDraft<AuthState>,
+          action: PayloadAction<
+            unknown,
+            string,
+            {
+              arg: void;
+              requestId: string;
+              requestStatus: 'rejected';
+              aborted: boolean;
+              condition: boolean;
+            } & (
+              | { rejectedWithValue: true }
+              | ({ rejectedWithValue: false } & {})
+            ),
             SerializedError
           >
         ) => {
