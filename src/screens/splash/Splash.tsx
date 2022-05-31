@@ -1,20 +1,33 @@
-import { StyleSheet, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-
-import { auth } from '../../config/firebase';
-import { useAppSelector } from '../../hooks/storeHooks';
-import { selectToken } from '../../redux/slices/auth/authSlice';
-
+import { useEffect } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { useAppDispatch, useAppSelector } from '../../hooks/storeHooks';
 import MainTabs from '../../navigation/MainTabs';
+import { selectToken } from '../../redux/slices/auth/authSlice';
+import { checkIsUserFirstTime } from '../../redux/slices/user/user.actions';
+import { selectIsUserFirstTime } from '../../redux/slices/user/userSlice';
 import Authentication from '../authentication/Authentication';
+import Onboard from '../onboard/Onboard';
 
 const Splash = () => {
+  const isUserFirstTime = useAppSelector(selectIsUserFirstTime);
   const token = useAppSelector(selectToken);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(checkIsUserFirstTime());
+  }, []);
 
   return (
     <View style={styles.mainContainer}>
       <StatusBar />
-      {token ? <MainTabs /> : <Authentication />}
+      {isUserFirstTime ? (
+        <Onboard />
+      ) : token ? (
+        <MainTabs />
+      ) : (
+        <Authentication />
+      )}
     </View>
   );
 };

@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { View, Button, StyleSheet } from 'react-native';
+import { Button, StyleSheet, View } from 'react-native';
 import { useAppDispatch } from '../../hooks/storeHooks';
-
-import { userSignIn } from '../../redux/slices/auth/authSlice';
+import { userSignIn } from '../../redux/slices/auth/auth.actions';
+import { deleteIsUserFirstTime } from '../../redux/slices/user/user.actions';
 
 function Authentication() {
   const [isSignIn, setIsSignIn] = useState(true);
@@ -29,6 +29,10 @@ function Authentication() {
       <Button
         title={isSignIn ? 'Go to Sign Up' : 'Go to Sign In'}
         onPress={(_event) => setIsSignIn((prev) => !prev)}
+      />
+      <Button
+        title='Delete isUserFirstTime'
+        onPress={() => dispatch(deleteIsUserFirstTime())}
       />
     </View>
   );
