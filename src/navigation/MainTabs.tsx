@@ -1,7 +1,6 @@
 import { Button, StyleSheet, Text, View } from 'react-native';
 import { useAppDispatch } from '../hooks/storeHooks';
-
-import { userSignOut } from '../redux/slices/auth/authSlice';
+import { userSignOut } from '../redux/slices/auth/auth.actions';
 
 function MainTabs() {
   const dispatch = useAppDispatch();
