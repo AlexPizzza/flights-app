@@ -1,42 +1,47 @@
 import { useEffect, useRef, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
+
 import firstImage from '../../../assets/onboard/1.png';
 import secondImage from '../../../assets/onboard/2.png';
 import thirdImage from '../../../assets/onboard/3.png';
 import fourthImage from '../../../assets/onboard/4.png';
-import Button, { ButtonProps } from '../../components/onboard/button/Button';
-import Slide from '../../components/onboard/slide/Slide';
-import colors from '../../global/colors';
+
 import { useAppDispatch } from '../../hooks/storeHooks';
 import { setIsUserFirstTimeToFalse } from '../../redux/slices/user/user.actions';
-import { SlideData } from './onboard.interaces';
+
+import { SlideData } from './onboard.interfaces';
+import Button from '../../components/onboard/button/Button';
+import Slide from '../../components/onboard/slide/Slide';
+import colors from '../../global/colors';
 
 const slides: SlideData[] = [
   {
-    key: '1',
+    key: 'slide_1',
     title: 'Welcome to Fly!',
     description: null,
     image: firstImage
   },
   {
-    key: '2',
+    key: 'slide_2',
     title: 'Time to travel!',
     description: 'View the cheapest flights through our app.',
     image: secondImage
   },
   {
-    key: '3',
+    key: 'slide_3',
     title: 'Book a flight!',
     description: 'Find the best flight for your next travel.',
     image: thirdImage
   },
   {
-    key: '4',
+    key: 'slide_4',
     title: 'Getting started is easy!',
     description: 'Create an account and enjoy your next vacation!',
     image: fourthImage
   }
 ];
+
+const dots = Array.from(Array(4).keys());
 
 function Onboard() {
   const [index, setIndex] = useState(0);
@@ -57,13 +62,6 @@ function Onboard() {
     setIndex((prev) => (prev > 0 ? prev - 1 : 0));
   };
 
-  const buttonProps: ButtonProps = {
-    title: '',
-    borderColor: colors.BLACK,
-    borderWidth: 4,
-    borderRadius: 0
-  };
-
   return (
     <View style={styles.onboardContainer}>
       <FlatList
@@ -79,29 +77,28 @@ function Onboard() {
       />
       <View style={styles.buttonsContainer}>
         {index === 0 ? (
-          <Button
-            {...buttonProps}
-            title='Skip'
-            onPress={() => setIndex(3)}
-            left
-          />
+          <Button title='Skip' onPress={() => setIndex(3)} />
         ) : (
-          <Button
-            {...buttonProps}
-            title='Previous'
-            onPress={setPrevIndex}
-            left
-          />
+          <Button title='Previous' onPress={setPrevIndex} />
         )}
+        <View style={styles.dotsContainer}>
+          {dots.map((value, idx) => (
+            <View
+              key={value}
+              style={[
+                styles.dotStyle,
+                idx === index && { backgroundColor: colors.SECONDARY }
+              ]}
+            />
+          ))}
+        </View>
         {index === 3 ? (
           <Button
-            {...buttonProps}
             title='Done'
             onPress={() => dispatch(setIsUserFirstTimeToFalse())}
-            right
           />
         ) : (
-          <Button {...buttonProps} title='Next' onPress={setNextIndex} right />
+          <Button title='Next' onPress={setNextIndex} />
         )}
       </View>
     </View>
@@ -115,7 +112,21 @@ const styles = StyleSheet.create({
   },
   buttonsContainer: {
     display: 'flex',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    marginBottom: 20
+  },
+  dotsContainer: {
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center'
+  },
+  dotStyle: {
+    width: 10,
+    height: 10,
+    borderRadius: 100,
+    backgroundColor: colors.BLACK
   }
 });
 

@@ -1,5 +1,5 @@
 import { Dimensions, Image, StyleSheet, Text, View } from 'react-native';
-import { SlideData } from '../../../screens/onboard/onboard.interaces';
+import { SlideData } from '../../../screens/onboard/onboard.interfaces';
 
 type SlideProps = {
   key: string;

@@ -6,10 +6,10 @@ interface Color {
 }
 
 const colors: Color = {
-  MAIN: '#FFFFFF',
+  MAIN: '#FFF',
   SECONDARY: '#5F67EC',
   TERTIARY: '#FF9056',
-  BLACK: ' #000000'
+  BLACK: '#000'
 };
 
 export default colors;

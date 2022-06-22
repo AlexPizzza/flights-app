@@ -2,68 +2,29 @@ import {
   ColorValue,
   Dimensions,
   Pressable,
-  PressableAndroidRippleConfig,
+  PressableStateCallbackType,
   StyleSheet,
   Text,
   View
 } from 'react-native';
-import colors from '../../../global/colors';
 
 export type ButtonProps = {
   title: string;
   onPress?: VoidFunction;
-  backgroundColor?: ColorValue;
   textColor?: string;
-  borderWidth?: number;
-  borderColor?: ColorValue;
-  borderRadius?: number;
-  left?: boolean;
-  right?: boolean;
-};
-
-const android_ripple: PressableAndroidRippleConfig = {
-  borderless: true,
-  color: colors.SECONDARY
 };
 
 function Button(props: ButtonProps) {
-  const {
-    title,
-    onPress,
-    backgroundColor,
-    textColor,
-    borderWidth,
-    borderColor,
-    borderRadius,
-    left,
-    right
-  } = props;
+  const { title, onPress, textColor } = props;
 
   return (
-    <View
-      style={[
-        { ...styles.buttonContainer },
-        {
-          borderRadius: borderRadius ? borderRadius : 0,
-          borderWidth: borderWidth ? borderWidth : 0,
-          backgroundColor: backgroundColor ? backgroundColor : 'white'
-        },
-        borderColor !== undefined && { borderColor: borderColor },
-        (left || right) && { borderBottomWidth: 0 },
-        left && {
-          borderLeftWidth: 0,
-          borderRightWidth: borderWidth ? Math.floor(borderWidth / 2) : 0
-        },
-        right && {
-          borderRightWidth: 0,
-          borderLeftWidth: borderWidth ? Math.floor(borderWidth / 2) : 0
-        }
-      ]}
-    >
+    <View style={[{ ...styles.buttonContainer }]}>
       <Pressable
-        style={styles.buttonStyle}
+        style={({ pressed }) => [
+          styles.buttonStyle,
+          { opacity: pressed ? 0.5 : 1.0 }
+        ]}
         onPress={onPress}
-        android_ripple={android_ripple}
       >
         <Text style={{ color: textColor ? textColor : 'black' }}>{title}</Text>
       </Pressable>
