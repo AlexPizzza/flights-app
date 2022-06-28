@@ -17,7 +17,6 @@ export default MainTabs;
 
 const styles = StyleSheet.create({
   mainContainer: {
-    display: 'flex',
     flex: 1,
     alignContent: 'center',
     justifyContent: 'center'

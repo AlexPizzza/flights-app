@@ -1,14 +1,6 @@
-import {
-  ColorValue,
-  Dimensions,
-  Pressable,
-  PressableStateCallbackType,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
+import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native';
 
-export type ButtonProps = {
+type ButtonProps = {
   title: string;
   onPress?: VoidFunction;
   textColor?: string;
@@ -35,14 +27,12 @@ function Button(props: ButtonProps) {
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 const styles = StyleSheet.create({
   buttonContainer: {
-    display: 'flex',
     flex: 1,
     width: 0.3 * windowWidth,
     height: 0.1 * windowHeight,
     borderRadius: 10
   },
   buttonStyle: {
-    display: 'flex',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'

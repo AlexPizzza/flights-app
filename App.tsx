@@ -1,6 +1,6 @@
+import { NavigationContainer } from '@react-navigation/native';
 import { LogBox } from 'react-native';
 import { Provider } from 'react-redux';
-import { NavigationContainer } from '@react-navigation/native';
 
 import { store } from './src/redux/store';
 import Splash from './src/screens/splash/Splash';

@@ -21,7 +21,6 @@ function Slide(props: SlideProps) {
 const { width: windowWidth } = Dimensions.get('window');
 const styles = StyleSheet.create({
   slideContainer: {
-    display: 'flex',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'

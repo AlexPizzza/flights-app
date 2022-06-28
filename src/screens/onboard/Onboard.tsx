@@ -107,16 +107,13 @@ function Onboard() {
 
 const styles = StyleSheet.create({
   onboardContainer: {
-    display: 'flex',
     flex: 1
   },
   buttonsContainer: {
-    display: 'flex',
     flexDirection: 'row',
     marginBottom: 20
   },
   dotsContainer: {
-    display: 'flex',
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-around',

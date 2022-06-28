@@ -1,15 +1,14 @@
-import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useAppDispatch, useAppSelector } from '../../hooks/storeHooks';
 import MainTabs from '../../navigation/MainTabs';
+import Authentication from '../../navigation/stacks/AuthenticationStack';
 import { selectToken } from '../../redux/slices/auth/authSlice';
 import { checkIsUserFirstTime } from '../../redux/slices/user/user.actions';
 import { selectIsUserFirstTime } from '../../redux/slices/user/userSlice';
-import Authentication from '../authentication/Authentication';
 import Onboard from '../onboard/Onboard';
 
-const Splash = () => {
+function Splash() {
   const isUserFirstTime = useAppSelector(selectIsUserFirstTime);
   const token = useAppSelector(selectToken);
   const dispatch = useAppDispatch();
@@ -20,7 +19,6 @@ const Splash = () => {
 
   return (
     <View style={styles.mainContainer}>
-      <StatusBar />
       {isUserFirstTime ? (
         <Onboard />
       ) : token ? (
@@ -30,11 +28,10 @@ const Splash = () => {
       )}
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   mainContainer: {
-    display: 'flex',
     flex: 1
   }
 });
