@@ -1,4 +1,4 @@
-import { ColorValue, StatusBar, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import AuthHeader from '../../../components/authentication/Header/AuthHeader';
 import colors from '../../../global/colors';
 import authImage from '../../../../assets/auth.png';
