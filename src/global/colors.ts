@@ -4,6 +4,7 @@ interface Color {
   TERTIARY: string;
   BLACK: string;
   FOOTER: string;
+  BLUE: string;
 }
 
 const colors: Color = {
@@ -11,7 +12,8 @@ const colors: Color = {
   SECONDARY: '#5F67EC',
   TERTIARY: '#FF9056',
   BLACK: '#000',
-  FOOTER: '#100F2F'
+  FOOTER: '#100F2F',
+  BLUE: '#4285F4'
 };
 
 export default colors;

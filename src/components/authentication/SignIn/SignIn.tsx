@@ -4,6 +4,8 @@ import { Formik } from 'formik';
 import { useState } from 'react';
 import { Dimensions, Pressable, StyleSheet, View } from 'react-native';
 import colors from '../../../global/colors';
+import { useAppDispatch } from '../../../hooks/storeHooks';
+import { userSignIn } from '../../../redux/slices/auth/auth.actions';
 import AuthButton from '../AuthButton/AuthButton';
 import WelcomeText from '../WelcomeText/WelcomeText';
 
@@ -14,14 +16,10 @@ type Errors = {
 
 function SignIn() {
   const [isSecureTextEntry, setIsSecureTextEntry] = useState(true);
+  const dispatch = useAppDispatch();
 
   const onEyeButtonPress = () => {
     setIsSecureTextEntry((prevValue) => !prevValue);
-  };
-
-  const onAuthButtonPress = (email: string, password: string): void => {
-    console.log('email', email);
-    console.log('password', password);
   };
 
   return (
@@ -48,7 +46,9 @@ function SignIn() {
           return errors;
         }}
         onSubmit={(values) => {
-          console.log('submit', values);
+          dispatch(
+            userSignIn({ email: values.email, password: values.password })
+          );
         }}
       >
         {({
@@ -127,7 +127,9 @@ function SignIn() {
               title='Sign in'
               backgroundColor={colors.FOOTER}
               textColor={colors.MAIN}
-              disabled={!isValid}
+              disabled={
+                !values.email.length || !values.password.length || !isValid
+              }
               onPress={handleSubmit}
             />
           </View>
@@ -140,7 +142,7 @@ function SignIn() {
 const { width } = Dimensions.get('screen');
 const styles = StyleSheet.create({
   signInContainer: {
-    flex: 1,
+    flex: 3,
     borderRadius: 80,
     borderTopLeftRadius: 0,
     backgroundColor: colors.MAIN,
@@ -149,7 +151,7 @@ const styles = StyleSheet.create({
     paddingVertical: 20
   },
   inputsContainer: {
-    flex: 5,
+    flex: 2,
     alignItems: 'center',
     width: width * 0.9
   },

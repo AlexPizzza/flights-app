@@ -4,6 +4,7 @@ import colors from '../../../global/colors';
 import authImage from '../../../../assets/auth.png';
 import CustomImage from '../../../components/authentication/CustomImage/CustomImage';
 import SignIn from '../../../components/authentication/SignIn/SignIn';
+import Footer from '../../../components/authentication/Footer/Footer';
 
 function SignInScreen() {
   return (
@@ -11,14 +12,12 @@ function SignInScreen() {
       <AuthHeader image={authImage} />
       <View style={styles.imageAndFormContainer}>
         <CustomImage image={authImage} />
-        {/* <View style={styles.signInContainer}> */}
         <SignIn />
-        {/* </View> */}
-        {/* <Footer
-          basicText="Don't have an account?"
+        <Footer
           authText='Sign Up Here'
+          basicText="Don't have an account?"
           screenName='SignUp'
-        /> */}
+        />
       </View>
     </View>
   );
@@ -34,12 +33,5 @@ const styles = StyleSheet.create({
   imageAndFormContainer: {
     flex: 1,
     borderTopLeftRadius: 80
-  },
-  signInContainer: {
-    flex: 2,
-    alignItems: 'center',
-    alignContent: 'center',
-    borderWidth: 2,
-    borderColor: 'red'
   }
 });

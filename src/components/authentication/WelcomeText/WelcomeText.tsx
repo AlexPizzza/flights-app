@@ -17,7 +17,8 @@ const WelcomeText = ({ headerText, descriptionText }: Props) => {
 const styles = StyleSheet.create({
   welcomeTextContainer: {
     flex: 1,
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   headerText: {
     fontWeight: 'bold'
